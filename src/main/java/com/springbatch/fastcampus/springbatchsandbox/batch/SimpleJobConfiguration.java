@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Map;
+
 @Configuration
 @RequiredArgsConstructor
 public class SimpleJobConfiguration {
@@ -35,7 +37,12 @@ public class SimpleJobConfiguration {
     @Bean
     public Tasklet testTasklet(){
         return (contribution, chunkContext) -> {
-            upbitMarketService.callUpbit();
+            Map<String, Object> jobParameters = chunkContext.getStepContext().getJobParameters();
+            Object unitObj = jobParameters.get("unit");
+            Integer unit = Integer.valueOf(String.valueOf(unitObj));
+            String market = String.valueOf(jobParameters.get("market"));
+
+            upbitMarketService.callUpbit(unit,market);
             System.out.println(">>>>> this is step 1");
             return RepeatStatus.FINISHED;
         };

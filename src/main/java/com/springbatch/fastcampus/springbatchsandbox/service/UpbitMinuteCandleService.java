@@ -12,9 +12,9 @@ public class UpbitMinuteCandleService {
 
 
 
-    public void callUpbit() {
+    public void callUpbit(int unit,String market) {
 //        ObjectMapper om = new ObjectMapper();
-        String result = upbitFeignClient.getMinuteCandle(60, "KRW-BTC", 2);
+        String result = upbitFeignClient.getMinuteCandle(unit, market, 10);
         System.out.println(result);
 
     }
